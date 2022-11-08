@@ -1,7 +1,7 @@
-
-import {FormRow, Alert, FormRowSelect} from '../../components';
-import { useAppContext } from '../../context/appContext';
-import Wrapper from '../../assets/wrappers/DashboardFormPage';
+import { FormRow, Alert, FormRowSelect } from "../../components";
+import { useAppContext } from "../../context/appContext";
+import Wrapper from "../../assets/wrappers/DashboardFormPage";
+import { useNavigate } from "react-router-dom";
 
 export default function AddJob() {
   const {
@@ -19,72 +19,76 @@ export default function AddJob() {
     clearValues,
     createJob,
     isLoading,
-    editJob,    
-  } = useAppContext()
+    editJob,
+  } = useAppContext();
+  const navigate = useNavigate();
 
-  const handleSubmit = e => {
-    e.preventDefault()
+  const redirect = () => {
+    setTimeout(() => {
+      navigate("/all-jobs");
+    }, 1000);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
     if (!position || !company || !jobLocation) {
-      displayAlert()
-      return
+      displayAlert();
+      return;
     }
 
     if (isEditing) {
-      editJob()
-      return
+      editJob();
+      redirect();
+      return;
     }
 
-    createJob()
-  }
+    createJob();
+  };
 
+  const handleJobInput = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
 
-  const handleJobInput = e => {
-    const name = e.target.name
-    const value = e.target.value
-
-    handleChange({name, value})
-  }
-
+    handleChange({ name, value });
+  };
 
   return (
     <Wrapper>
-      <form
-        className='form'
-      >
-        <h3>{isEditing ? 'edit job' : 'add job'}</h3>
+      <form className="form">
+        <h3>{isEditing ? "edit job" : "add job"}</h3>
         {showAlert && <Alert />}
 
-        <div className='form-center'>
+        <div className="form-center">
           {/* company */}
           <FormRow
-            type='text'
-            name='company'
+            type="text"
+            name="company"
             value={company}
             handleChange={handleJobInput}
           />
 
           {/* position */}
           <FormRow
-            type='text'
-            name='position'
+            type="text"
+            name="position"
             value={position}
             handleChange={handleJobInput}
           />
 
           {/* location */}
           <FormRow
-            labelText='job location'
-            type='text'
-            name='jobLocation'
+            labelText="job location"
+            type="text"
+            name="jobLocation"
             value={jobLocation}
             handleChange={handleJobInput}
           />
 
           {/* job type */}
           <FormRowSelect
-            labelText='job type'
-            name='jobType'
+            labelText="job type"
+            name="jobType"
             value={jobType}
             handleChange={handleJobInput}
             listOfOptions={jobTypeOptions}
@@ -92,28 +96,39 @@ export default function AddJob() {
 
           {/* job status */}
           <FormRowSelect
-            labelText='status type'
-            name='status'
+            labelText="status type"
+            name="status"
             value={status}
             handleChange={handleJobInput}
             listOfOptions={statusOptions}
           />
 
-          <div className='btn-container'>
-            <button
-              className='btn btn-block submit-btn'
-              type='submit'
-              onClick={handleSubmit}
-              disabled={isLoading}
-            >
-              submit
-            </button>
+          <div className="btn-container">
+            {isEditing ? (
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="btn btn-block submit-btn"
+                onClick={handleSubmit}
+              >
+                modify
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="btn btn-block submit-btn"
+                disabled={isLoading}
+                onClick={handleSubmit}
+              >
+                submit
+              </button>
+            )}
 
             <button
-              className='btn btn-block clear-btn'
-              onClick={e => {
-                e.preventDefault()
-                clearValues()
+              className="btn btn-block clear-btn"
+              onClick={(e) => {
+                e.preventDefault();
+                clearValues();
               }}
               disabled={isLoading}
             >
@@ -123,5 +138,5 @@ export default function AddJob() {
         </div>
       </form>
     </Wrapper>
-  )
+  );
 }
