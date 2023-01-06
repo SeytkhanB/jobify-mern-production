@@ -1,9 +1,12 @@
 [build]
-  command = "npm run install-client && npm run build-client && npm install"
-  publish = "build"
-  base = "/"
+  functions = "./functions"
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
+[dev]
+  command = "npm run install-client && npm run build-client && npm install"
+  targetPort = 5173
+  port = 8888
