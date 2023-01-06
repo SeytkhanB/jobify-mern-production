@@ -31,15 +31,15 @@ export default function SearchContainer() {
     let timeoutID;
     return (e) => {
       const { name, value } = e.target;
-      setLocalSearch(e.target.value);
+      setLocalSearch(value);
       clearTimeout(timeoutID);
       timeoutID = setTimeout(() => {
         handleChange({ name, value });
-      }, 1500);
+      }, 1000);
     };
   };
 
-  const optimizedDebounce = useMemo(() => debounce(), [debounce]);
+  const optimizedDebounce = useMemo(() => debounce(), []);
 
   return (
     <Wrapper>
